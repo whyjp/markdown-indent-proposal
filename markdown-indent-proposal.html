@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Markdown Indent — .> Syntax Proposal</title>
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --bg: #0c0c0e; --surface: #151518; --surface-2: #1c1c21; --border: #2a2a32;
+  --text: #e8e6e3; --text-dim: #8a8892; --accent: #c4f042; --accent-dim: #c4f04230;
+  --red: #ff6b6b; --blue: #6bc5ff; --orange: #ffb86b;
+  --mono: 'IBM Plex Mono', monospace; --serif: 'Pretendard Variable', 'Pretendard', sans-serif; --sans: 'Pretendard Variable', 'Pretendard', sans-serif;
+}
+/* LANG TOGGLE */
+html[lang="ko"] .en { display: none !important; }
+html[lang="en"] .ko { display: none !important; }
+.lang-toggle { position:fixed;top:1.2rem;right:1.5rem;z-index:999;display:flex;border:1px solid var(--border);border-radius:3px;overflow:hidden;background:var(--surface);backdrop-filter:blur(12px); }
+.lang-btn { font-family:var(--mono);font-size:0.72rem;font-weight:500;letter-spacing:0.08em;padding:0.45rem 0.9rem;border:none;cursor:pointer;background:transparent;color:var(--text-dim);transition:all 0.15s; }
+.lang-btn.active { background:var(--accent);color:var(--bg); }
+html { scroll-behavior: smooth; }
+body { background:var(--bg);color:var(--text);font-family:var(--sans);font-weight:400;line-height:1.7;overflow-x:hidden; }
+.hero { min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:2rem;position:relative;overflow:hidden; }
+.hero::before { content:'.>\A..>\A...>\A....>';white-space:pre;font-family:var(--mono);font-size:clamp(6rem,18vw,22rem);font-weight:600;color:var(--accent-dim);position:absolute;right:-2%;top:50%;transform:translateY(-50%);line-height:1;pointer-events:none;opacity:0;animation:fadeSlide 1.2s ease-out 0.3s forwards; }
+@keyframes fadeSlide { from{opacity:0;transform:translateY(-50%) translateX(40px)} to{opacity:1;transform:translateY(-50%) translateX(0)} }
+.hero-content { max-width:720px;position:relative;z-index:1;opacity:0;animation:heroIn 0.8s ease-out 0.1s forwards; }
+@keyframes heroIn { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+.hero-badge { display:inline-block;font-family:var(--mono);font-size:0.75rem;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;color:var(--accent);border:1px solid var(--accent);padding:0.35rem 1rem;border-radius:2px;margin-bottom:2rem; }
+.hero h1 { font-family:var(--sans);font-size:clamp(2.8rem,6vw,5rem);font-weight:700;line-height:1.1;margin-bottom:1.5rem;letter-spacing:-0.03em; }
+.hero h1 em { font-style:normal;color:var(--accent);font-weight:800; }
+.hero p { font-size:1.1rem;color:var(--text-dim);max-width:540px;margin-bottom:2.5rem; }
+.hero-cta { display:inline-flex;align-items:center;gap:0.5rem;font-family:var(--mono);font-size:0.85rem;color:var(--bg);background:var(--accent);padding:0.8rem 1.8rem;text-decoration:none;border-radius:2px;transition:all 0.2s; }
+.hero-cta:hover { filter:brightness(1.1);transform:translateY(-1px); }
+section { padding:6rem 2rem;max-width:1080px;margin:0 auto; }
+.sl { font-family:var(--mono);font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);margin-bottom:1rem; }
+.st { font-family:var(--sans);font-size:clamp(2rem,4vw,3rem);font-weight:700;margin-bottom:1.5rem;line-height:1.2;letter-spacing:-0.02em; }
+/* PROBLEM */
+.pg { display:flex;flex-direction:column;gap:0;margin-top:2.5rem;border:1px solid var(--border);border-radius:4px;overflow:hidden; }
+.pc { border-bottom:1px solid var(--border); } .pc:last-child{border-bottom:none;}
+.pch { display:flex;align-items:center;gap:1rem;padding:1rem 1.5rem;background:var(--surface);border-bottom:1px solid var(--border); }
+.pn { font-family:var(--mono);font-size:0.7rem;font-weight:600;color:var(--red);letter-spacing:0.05em;white-space:nowrap;min-width:44px; }
+.pct { font-family:var(--mono);font-size:0.85rem;font-weight:500;color:var(--text); }
+.pcb { display:grid;grid-template-columns:1fr 1fr; }
+.pw,.pr { padding:1.2rem 1.5rem; } .pw{border-right:1px solid var(--border);} .pr{background:#ff6b6b04;}
+.pl { font-family:var(--mono);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.6rem; }
+.pw .pl{color:var(--text-dim);} .pr .pl{color:var(--red);}
+.pcode { font-family:var(--mono);font-size:0.8rem;line-height:1.8;white-space:pre;overflow-x:auto;color:var(--text-dim); }
+.pcode .pain { color:var(--red);background:#ff6b6b10;padding:0 2px;border-radius:1px; }
+.pv { padding:0.7rem 1.5rem;border-top:1px solid var(--border);font-family:var(--mono);font-size:0.72rem;color:var(--red);background:#ff6b6b06;display:flex;align-items:center;gap:0.5rem; }
+.pv::before{content:'⚠';font-size:0.8rem;}
+.pmr { font-family:var(--sans);font-size:0.9rem;line-height:1.7;color:var(--text); }
+.pmr .rbq { border-left:3px solid #5c6bc0;padding:0.5rem 0 0.5rem 0.8rem;color:var(--text-dim);background:#5c6bc010;margin:0.2rem 0; }
+.pmr .rbqn { border-left:3px solid #5c6bc0;padding:0.3rem 0 0.3rem 0.8rem;color:var(--text-dim);background:#5c6bc010;margin:0.3rem 0; }
+.pmr .rcb { background:#1a1a20;border:1px solid var(--border);border-radius:3px;padding:0.6rem 0.8rem;font-family:var(--mono);font-size:0.82rem;color:var(--text-dim);margin:0.2rem 0; }
+.pmr .rl { list-style:disc;padding-left:1.5em;margin:0.2rem 0; } .pmr .rl li{margin:0.1rem 0;color:var(--text);}
+.pmr .rso { display:inline-block;font-family:var(--mono);font-size:0.7rem;color:var(--red);background:#ff6b6b12;padding:0.15rem 0.5rem;border-radius:2px;margin-top:0.4rem; }
+.pmr .rvs { display:flex;flex-direction:column;gap:0.6rem; }
+.pmr .rv { padding:0.5rem 0.6rem;background:var(--bg);border-radius:3px;border:1px solid var(--border); }
+.pmr .rvl { font-family:var(--mono);font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-dim);margin-bottom:0.3rem; }
+/* SYNTAX */
+.syns { border-top:1px solid var(--border); }
+.synt { width:100%;margin-top:2.5rem;border-collapse:collapse; }
+.synt th { font-family:var(--mono);font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--text-dim);text-align:left;padding:0.75rem 1rem;border-bottom:1px solid var(--border); }
+.synt td { padding:0.85rem 1rem;border-bottom:1px solid var(--border);font-size:0.95rem; }
+.synt td:first-child { font-family:var(--mono);font-weight:500;color:var(--accent);white-space:nowrap; }
+.synt td:nth-child(2) { font-family:var(--mono);color:var(--orange);font-size:0.85rem; }
+.synt td:last-child { color:var(--text-dim); }
+/* COMPARE */
+.cmps { border-top:1px solid var(--border); }
+.cmpg { display:grid;grid-template-columns:1fr 1fr;gap:0;margin-top:2.5rem;border:1px solid var(--border);border-radius:4px;overflow:hidden; }
+.cmpp { padding:0; } .cmph { font-family:var(--mono);font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;padding:0.8rem 1.5rem;border-bottom:1px solid var(--border); }
+.cmpp:first-child .cmph{background:#ff6b6b10;color:var(--red);} .cmpp:first-child{border-right:1px solid var(--border);}
+.cmpp:last-child .cmph{background:#c4f04210;color:var(--accent);}
+.cmpc { padding:1.5rem;font-family:var(--mono);font-size:0.82rem;line-height:1.9;white-space:pre;overflow-x:auto;min-height:260px; }
+.cmpc .kw{color:var(--blue);} .cmpc .ind{color:var(--accent);} .cmpc .dm{color:var(--text-dim);} .cmpc .st2{color:var(--orange);}
+/* SCOPE */
+.scps { border-top:1px solid var(--border); }
+.scpg { display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:2.5rem; }
+.scpc { border:1px solid var(--border);border-radius:4px;overflow:hidden; }
+.scph { display:flex;align-items:center;gap:0.6rem;padding:0.8rem 1.2rem;font-family:var(--mono);font-size:0.82rem;font-weight:500;border-bottom:1px solid var(--border); }
+.scpdo .scph{background:#c4f04210;color:var(--accent);} .scpno .scph{background:#ff6b6b10;color:var(--red);}
+.scpdo .scpi{background:var(--accent-dim);} .scpno .scpi{background:#ff6b6b20;}
+.scpi { width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:0.7rem;border-radius:2px; }
+.scpb { padding:1rem 1.2rem;display:flex;flex-direction:column;gap:1rem; }
+.scpcd { font-family:var(--mono);font-size:0.8rem;line-height:1.6;padding:0.5rem 0.8rem;background:var(--bg);border-radius:3px;margin-bottom:0.3rem; }
+.scpcd .hl{color:var(--accent);} .scpcd .dm{opacity:0.45;}
+.scpds { font-size:0.82rem;color:var(--text-dim);padding-left:0.2rem; }
+.scpr { margin-top:2rem;border:1px solid var(--border);border-radius:4px;overflow:hidden; }
+.scprt { font-family:var(--mono);font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;padding:0.7rem 1.2rem;border-bottom:1px solid var(--border);background:var(--surface);color:var(--text-dim); }
+.scprb { padding:1.2rem;font-size:0.9rem;line-height:1.8;color:var(--text-dim); }
+.scprb code { font-family:var(--mono);font-size:0.82rem;padding:1px 5px;border-radius:2px;background:var(--surface); }
+/* PREVIEW */
+.pvs { border-top:1px solid var(--border); }
+.pvc { margin-top:2.5rem;border:1px solid var(--border);border-radius:4px;overflow:hidden; }
+.pvt { display:flex;align-items:center;gap:0.5rem;padding:0.6rem 1rem;background:var(--surface);border-bottom:1px solid var(--border);font-family:var(--mono);font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-dim); }
+.pvt .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+.pvsp { display:grid;grid-template-columns:1fr 1fr; }
+.ep,.rp { min-height:550px; } .ep{border-right:1px solid var(--border);position:relative;background:#08080a;}
+.pvl { font-family:var(--mono);font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--text-dim);padding:0.6rem 1rem;border-bottom:1px solid var(--border);background:var(--surface-2); }
+.ep .pvl { color:var(--blue);background:#0e0e12;display:flex;align-items:center;gap:0.6rem; }
+.ep .pvl::before { content:'';width:6px;height:6px;border-radius:50%;background:var(--blue);opacity:0.6; }
+.ep .pvl::after { content:'EDITABLE';font-size:0.55rem;letter-spacing:0.12em;color:var(--blue);opacity:0.5;margin-left:auto; }
+.editor-wrap { display:flex;height:calc(100% - 32px);min-height:520px; }
+.line-nums { width:44px;min-width:44px;background:#0a0a0d;border-right:1px solid #1a1a22;padding:1.2rem 0;font-family:var(--mono);font-size:0.85rem;line-height:1.8;color:#3a3a48;text-align:right;overflow:hidden;user-select:none;-webkit-user-select:none;flex-shrink:0; }
+.line-nums div { padding-right:10px; }
+.ep textarea { flex:1;width:100%;height:100%;min-height:520px;background:#08080a;color:var(--text);font-family:var(--mono);font-size:0.85rem;line-height:1.8;padding:1.2rem;border:none;outline:none;resize:none;tab-size:2; }
+.ep textarea::selection { background:var(--accent-dim); }
+.ep textarea:focus { background:#0a0a0e; }
+.rp .pvl{color:var(--accent);display:flex;align-items:center;gap:0.6rem;}
+.guide-toggle{margin-left:auto;display:flex;align-items:center;gap:0.5rem;cursor:pointer;user-select:none;-webkit-user-select:none;}
+.guide-toggle span{font-size:0.55rem;letter-spacing:0.1em;color:var(--text-dim);transition:color 0.15s;}
+.guide-switch{width:28px;height:14px;border-radius:7px;background:var(--border);position:relative;transition:background 0.2s;}
+.guide-switch::after{content:'';position:absolute;top:2px;left:2px;width:10px;height:10px;border-radius:50%;background:var(--text-dim);transition:all 0.2s;}
+.guide-toggle.on .guide-switch{background:var(--accent-dim);}
+.guide-toggle.on .guide-switch::after{left:16px;background:var(--accent);}
+.guide-toggle.on span{color:var(--accent);}
+.ro.no-guides .md-indent{border-left-color:transparent !important;}
+.ro { padding:1.2rem 1.5rem;font-family:var(--sans);font-size:0.95rem;line-height:1.8;min-height:520px;background:var(--bg); }
+.ro .md-h1{font-family:var(--sans);font-size:1.6rem;font-weight:700;margin:0.5rem 0;border-bottom:1px solid var(--border);padding-bottom:0.3rem;}
+.ro .md-h2{font-family:var(--sans);font-size:1.25rem;font-weight:600;margin:0.8rem 0 0.3rem;color:var(--text);}
+.ro .md-h3{font-family:var(--sans);font-size:1.1rem;font-weight:500;margin:0.5rem 0;color:var(--text-dim);}
+.ro .md-p{margin:0.3rem 0;} .ro .md-indent{border-left:2px solid var(--accent);margin:0.15rem 0;}
+.ro .md-bold{font-weight:700;} .ro .md-italic{font-style:italic;color:var(--text-dim);} .ro .md-strike{text-decoration:line-through;color:var(--text-dim);}
+.ro .md-blockquote{border-left:3px solid var(--blue);padding:0.3rem 0 0.3rem 1em;color:var(--text-dim);font-style:italic;margin:0.3rem 0;}
+.ro .md-code-block{background:#0a0a0c;border:1px solid var(--border);border-radius:4px;padding:0.8rem 1rem;font-family:var(--mono);font-size:0.8rem;line-height:1.7;color:var(--orange);margin:0.4rem 0;overflow-x:auto;white-space:pre;}
+.ro .md-code-lang{font-family:var(--mono);font-size:0.65rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.2rem;}
+.ro .md-ul{margin:0.3rem 0;padding:0;} .ro .md-ul li{position:relative;padding-left:1.2em;list-style:none;margin:0.15rem 0;} .ro .md-ul li::before{content:'•';position:absolute;left:0;color:var(--accent);font-weight:700;}
+.ro .md-ol{margin:0.3rem 0;padding:0;counter-reset:olc;} .ro .md-ol li{position:relative;padding-left:1.6em;list-style:none;margin:0.15rem 0;counter-increment:olc;} .ro .md-ol li::before{content:counter(olc) '.';position:absolute;left:0;color:var(--accent);font-family:var(--mono);font-size:0.85em;font-weight:500;}
+.ro .md-hr{border:none;border-top:1px solid var(--border);margin:0.8rem 0;}
+/* RATIONALE */
+.rats { border-top:1px solid var(--border); }
+.ratl { margin-top:2rem;display:flex;flex-direction:column;gap:1.5rem; }
+.rati { display:grid;grid-template-columns:48px 1fr;gap:1.2rem;align-items:start; }
+.ratn { font-family:var(--mono);font-size:1.4rem;font-weight:600;color:var(--accent);line-height:1;padding-top:0.2rem; }
+.rati h4{font-family:var(--mono);font-size:0.9rem;font-weight:500;margin-bottom:0.3rem;} .rati p{font-size:0.9rem;color:var(--text-dim);}
+/* SPEC */
+.spcs { border-top:1px solid var(--border); }
+.spcb { background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:2rem;margin-top:2rem;font-family:var(--mono);font-size:0.85rem;line-height:2;color:var(--text-dim);white-space:pre-wrap; }
+.spcb .rule{color:var(--accent);} .spcb .note{color:var(--blue);}
+/* WHY */
+.whys { border-top:1px solid var(--border); }
+.whyc { margin-top:1.5rem;font-size:1.05rem;color:var(--text-dim);max-width:640px;line-height:1.8; }
+.whycmp { display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:2.5rem; }
+.whyp { border:1px solid var(--border);border-radius:4px;overflow:hidden; }
+.whyph { display:flex;align-items:center;gap:0.6rem;padding:0.8rem 1.2rem;background:var(--surface);border-bottom:1px solid var(--border);font-family:var(--mono);font-size:0.82rem;font-weight:500; }
+.whypb { display:grid;grid-template-columns:1fr 28px 1fr;align-items:stretch;min-height:160px; }
+.whyf,.whyl { padding:1rem; } .whyf{background:var(--bg);} .whyl{background:var(--surface-2);}
+.whyfl,.whyll { font-family:var(--mono);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.5rem; }
+.whyfl{color:var(--text-dim);} .whyll{color:var(--accent);}
+.whyft,.whylt { font-size:0.88rem;line-height:1.7;color:var(--text-dim); }
+.whya { display:flex;align-items:center;justify-content:center;background:var(--surface);color:var(--text-dim);font-size:0.85rem;border-left:1px solid var(--border);border-right:1px solid var(--border); }
+.whypp { padding:1rem 1.2rem;border-top:1px solid var(--border);font-size:0.85rem;line-height:1.7;color:var(--text-dim);background:var(--surface); }
+.whypp strong{color:var(--text);font-weight:500;}
+.whybt { margin-top:2rem;padding:1.2rem 1.5rem;border:1px solid var(--border);border-radius:4px;font-size:0.92rem;line-height:1.8;color:var(--text-dim);background:var(--surface);text-align:center; }
+/* CTA */
+/* CTA removed */
+.btn { font-family:var(--mono);font-size:0.82rem;padding:0.8rem 2rem;border-radius:2px;text-decoration:none;display:inline-flex;align-items:center;gap:0.5rem;transition:all 0.2s;cursor:pointer;border:none; }
+.btn1{background:var(--accent);color:var(--bg);} .btn1:hover{filter:brightness(1.1);transform:translateY(-1px);}
+.btn2{background:transparent;border:1px solid var(--border);color:var(--text);} .btn2:hover{border-color:var(--accent);color:var(--accent);}
+footer { text-align:center;padding:3rem 2rem;border-top:1px solid var(--border);font-family:var(--mono);font-size:0.7rem;color:var(--text-dim);letter-spacing:0.1em; }
+@media(max-width:768px){
+  .cmpg,.scpg,.whycmp{grid-template-columns:1fr;} .cmpp:first-child{border-right:none;border-bottom:1px solid var(--border);}
+  .pvsp{grid-template-columns:1fr;} .ep{border-right:none;border-bottom:1px solid var(--border);} .ep textarea{min-height:300px;} .editor-wrap{min-height:300px;} .ro{min-height:300px;}
+  .hero::before{font-size:5rem;right:-10%;opacity:0.3;} section{padding:4rem 1.5rem;}
+  .pcb{grid-template-columns:1fr;} .pw{border-right:none;border-bottom:1px solid var(--border);}
+  .whypb{grid-template-columns:1fr;} .whya{border-left:none;border-right:none;border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:0.3rem;transform:rotate(90deg);}
+  .lang-toggle{top:0.8rem;right:0.8rem;}
+}
+</style>
+</head>
+<body>
+<div class="lang-toggle"><button class="lang-btn" id="btnKo" onclick="setLang('ko')">한국어</button><button class="lang-btn active" id="btnEn" onclick="setLang('en')">EN</button></div>
+
+<header class="hero"><div class="hero-content">
+  <div class="hero-badge">Markdown Extension Proposal</div>
+  <h1>Native <em>Indent</em><br>for Markdown</h1>
+  <p><span class="ko">마크다운에는 들여쓰기 전용 문법이 없습니다. <code style="font-family:var(--mono);color:var(--accent);background:var(--surface);padding:2px 6px;border-radius:2px">.></code> <code style="font-family:var(--mono);color:var(--accent);background:var(--surface);padding:2px 6px;border-radius:2px">..></code> <code style="font-family:var(--mono);color:var(--accent);background:var(--surface);padding:2px 6px;border-radius:2px">...></code> 구문으로 의미적 계층 구조를 표현하는 확장 문법을 제안합니다.</span><span class="en">Markdown has no dedicated indentation syntax. We propose <code style="font-family:var(--mono);color:var(--accent);background:var(--surface);padding:2px 6px;border-radius:2px">.></code> <code style="font-family:var(--mono);color:var(--accent);background:var(--surface);padding:2px 6px;border-radius:2px">..></code> <code style="font-family:var(--mono);color:var(--accent);background:var(--surface);padding:2px 6px;border-radius:2px">...></code> — a minimal extension for expressing semantic hierarchy through visual indentation.</span></p>
+  <a href="#problem" class="hero-cta"><span class="ko">↓ 문제 정의부터 보기</span><span class="en">↓ Start with the problem</span></a>
+</div></header>
+
+<section id="problem">
+  <div class="sl">01 — Problem</div>
+  <div class="st"><span class="ko">들여쓰기 하나에 이 고생</span><span class="en">All this pain for a simple indent</span></div>
+  <p style="color:var(--text-dim);max-width:640px;"><span class="ko">텍스트를 오른쪽으로 밀고 싶을 뿐인데, 마크다운은 공식적인 방법을 제공하지 않습니다. 모든 우회 방법은 무언가를 오용합니다.</span><span class="en">You just want to push text to the right. Markdown offers no official way. Every workaround misuses something else.</span></p>
+  <div class="pg">
+    <div class="pc"><div class="pch"><span class="pn">01-01</span><span class="pct"><span class="ko">&amp;nbsp; 반복 — HTML 엔티티 수동 삽입</span><span class="en">&amp;nbsp; repetition — manual HTML entities</span></span></div><div class="pcb"><div class="pw"><div class="pl"><span class="ko">마크다운 소스</span><span class="en">Markdown source</span></div><div class="pcode"><span class="pain">&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;</span>detail
+<span class="pain">&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;</span>deeper
+<span class="pain">&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;</span>level 3</div></div><div class="pr"><div class="pl"><span class="ko">실제 렌더링</span><span class="en">Actual render</span></div><div class="pmr"><div>&nbsp;&nbsp;&nbsp;&nbsp;detail</div><div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;deeper</div><div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;level 3</div><div class="rso"><span class="ko">→ 렌더링은 되지만... 소스를 다시 보세요</span><span class="en">→ It renders... but look at the source again</span></div></div></div></div><div class="pv"><span class="ko">깊이 3이면 &amp;nbsp; 12개. 소스 가독성 파괴. 파서마다 처리도 다름.</span><span class="en">Depth 3 = 12 &amp;nbsp; entities. Source readability destroyed. Parser behavior varies.</span></div></div>
+    <div class="pc"><div class="pch"><span class="pn">01-02</span><span class="pct"><span class="ko">> 블록인용 남용 — 시맨틱 오염</span><span class="en">> Blockquote abuse — semantic pollution</span></span></div><div class="pcb"><div class="pw"><div class="pl"><span class="ko">마크다운 소스</span><span class="en">Markdown source</span></div><div class="pcode"><span class="pain">&gt;</span> description
+<span class="pain">&gt; &gt;</span> supplementary
+<span class="pain">&gt; &gt; &gt;</span> details</div></div><div class="pr"><div class="pl"><span class="ko">실제 렌더링</span><span class="en">Actual render</span></div><div class="pmr"><div class="rbq">description<div class="rbqn">supplementary<div class="rbqn">details</div></div></div><div class="rso"><span class="ko">🔊 스크린 리더: "인용 시작… 인용 속 인용…"</span><span class="en">🔊 Screen reader: "blockquote… nested blockquote…"</span></div></div></div></div><div class="pv"><span class="ko">들여쓰기를 원했지만 &lt;blockquote&gt; 3중 중첩. 의도와 시맨틱이 완전히 불일치.</span><span class="en">Wanted indentation, got triple-nested &lt;blockquote&gt;. Intent and semantics misaligned.</span></div></div>
+    <div class="pc"><div class="pch"><span class="pn">01-03</span><span class="pct"><span class="ko">탭 / 스페이스 4칸 — 코드 블록으로 변신</span><span class="en">Tab / 4 spaces — becomes a code block</span></span></div><div class="pcb"><div class="pw"><div class="pl"><span class="ko">마크다운 소스</span><span class="en">Markdown source</span></div><div class="pcode">normal paragraph
+
+<span class="pain">    </span>just want margin
+<span class="pain">    </span>this is plain text</div></div><div class="pr"><div class="pl"><span class="ko">실제 렌더링</span><span class="en">Actual render</span></div><div class="pmr"><div>normal paragraph</div><div class="rcb">just want margin
+this is plain text</div><div class="rso"><span class="ko">→ &lt;pre&gt;&lt;code&gt; 코드 블록이 되어버림</span><span class="en">→ Rendered as &lt;pre&gt;&lt;code&gt; block</span></div></div></div></div><div class="pv"><span class="ko">4칸 스페이스 = 코드 블록. 가장 직관적인 들여쓰기 방법이 이미 점유됨.</span><span class="en">4 spaces = code block. The most intuitive indentation method is already taken.</span></div></div>
+    <div class="pc"><div class="pch"><span class="pn">01-04</span><span class="pct"><span class="ko">빈 리스트 아이템 트릭 — 대부분 렌더러에서 무효</span><span class="en">Empty list item trick — invalid in most renderers</span></span></div><div class="pcb"><div class="pw"><div class="pl"><span class="ko">마크다운 소스</span><span class="en">Markdown source</span></div><div class="pcode"><span class="pain">-</span>
+  indented-looking text
+  continued</div></div><div class="pr"><div class="pl"><span class="ko">실제 렌더링 (대부분의 파서)</span><span class="en">Actual render (most parsers)</span></div><div class="pmr"><div class="rvs"><div class="rv"><div class="rvl">GitHub / CommonMark</div><ul class="rl"><li>indented-looking text continued</li></ul></div><div class="rv"><div class="rvl">VSCode Preview</div><ul class="rl"><li>&nbsp;</li></ul><div style="font-size:0.85rem;color:var(--text-dim)">indented-looking text</div></div></div><div class="rso"><span class="ko">→ 파서가 올바른 리스트로 교정하거나, 빈 불릿 노출</span><span class="en">→ Parser corrects to proper list, or exposes empty bullet</span></div></div></div></div><div class="pv"><span class="ko">렌더러마다 결과가 다름. 대부분은 올바른 리스트로 교정하므로 트릭 자체가 성립 안 함.</span><span class="en">Results vary. Most parsers correct to a proper list, so the trick simply doesn't work.</span></div></div>
+  </div>
+</section>
+
+<section class="syns">
+  <div class="sl">02 — Proposed Syntax</div>
+  <div class="st"><span class="ko">점(.)의 개수 = 깊이</span><span class="en">Number of dots = depth</span></div>
+  <p style="color:var(--text-dim);max-width:640px;margin-bottom:0.5rem;"><span class="ko">규칙은 단순합니다. 줄의 시작에 <code style="font-family:var(--mono);color:var(--accent)">.></code>를 사용하고, 점의 개수로 깊이를 표현합니다.</span><span class="en">The rule is simple. Start a line with <code style="font-family:var(--mono);color:var(--accent)">.></code> and express depth by the number of dots.</span></p>
+  <table class="synt"><thead><tr><th>Syntax</th><th>HTML Output</th><th><span class="ko">설명</span><span class="en">Description</span></th></tr></thead><tbody>
+    <tr><td>.> text</td><td>&lt;div class="indent-1"&gt;</td><td><span class="ko">1단계 들여쓰기</span><span class="en">Indent level 1</span></td></tr>
+    <tr><td>..> text</td><td>&lt;div class="indent-2"&gt;</td><td><span class="ko">2단계 들여쓰기</span><span class="en">Indent level 2</span></td></tr>
+    <tr><td>...> text</td><td>&lt;div class="indent-3"&gt;</td><td><span class="ko">3단계 들여쓰기</span><span class="en">Indent level 3</span></td></tr>
+    <tr><td>....> text</td><td>&lt;div class="indent-4"&gt;</td><td><span class="ko">4단계 들여쓰기</span><span class="en">Indent level 4</span></td></tr>
+  </tbody></table>
+</section>
+
+<section class="cmps">
+  <div class="sl">03 — AS-IS → TO-BE</div>
+  <div class="st"><span class="ko">같은 결과, 다른 의도</span><span class="en">Same result, different intent</span></div>
+  <div class="cmpg"><div class="cmpp"><div class="cmph">AS-IS</div><div class="cmpc"><span class="kw"># Project overview</span>
+
+<span class="dm">&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;</span>background
+<span class="dm">&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;</span>detail
+
+<span class="dm"><span class="ko">또는 blockquote 남용:</span><span class="en">or blockquote abuse:</span></span>
+
+<span class="st2">&gt;</span> background
+<span class="st2">&gt; &gt;</span> detail
+<span class="st2">&gt; &gt; &gt;</span> deeper
+
+<span class="dm"><span class="ko">⚠ 시맨틱 오염 / 소스 가독성 저하</span><span class="en">⚠ Semantic pollution / poor readability</span></span></div></div><div class="cmpp"><div class="cmph">TO-BE</div><div class="cmpc"><span class="kw"># Project overview</span>
+
+<span class="ind">.></span> background
+detail continues here
+more context
+
+<span class="ind">..></span> deeper note
+still inside depth 2
+
+<span class="dm"><span class="ko">✓ 의미 명확 (indent ≠ quote)</span><span class="en">✓ Clear intent (indent ≠ quote)</span></span>
+<span class="dm"><span class="ko">✓ lazy continuation — 접두사 반복 불필요</span><span class="en">✓ Lazy continuation — no prefix repetition</span></span>
+<span class="dm"><span class="ko">✓ 렌더러 독립적 / 충돌 없음</span><span class="en">✓ Renderer-independent / no conflicts</span></span></div></div></div>
+</section>
+
+<section class="scps">
+  <div class="sl">04 — Scope & Boundaries</div>
+  <div class="st"><span class="ko">컨테이너 블록 — <code style="font-family:var(--mono);color:var(--accent);font-size:0.7em">&gt;</code>와 동일한 모델</span><span class="en">Container block — same model as <code style="font-family:var(--mono);color:var(--accent);font-size:0.7em">&gt;</code></span></div>
+  <p style="color:var(--text-dim);max-width:640px;"><span class="ko"><code style="font-family:var(--mono);color:var(--accent);background:var(--surface);padding:2px 6px;border-radius:2px">.></code>는 <code style="font-family:var(--mono);color:var(--blue);background:var(--surface);padding:2px 6px;border-radius:2px">&gt;</code>와 동일한 container block입니다. lazy continuation을 허용하고, 빈 줄이 컨테이너를 종료합니다.</span><span class="en"><code style="font-family:var(--mono);color:var(--accent);background:var(--surface);padding:2px 6px;border-radius:2px">.></code> is a container block, same model as <code style="font-family:var(--mono);color:var(--blue);background:var(--surface);padding:2px 6px;border-radius:2px">&gt;</code>. Lazy continuation is allowed. An empty line terminates the container.</span></p>
+  <div class="scpg">
+    <div class="scpc scpdo"><div class="scph"><span class="scpi">✓</span><span><span class="ko">컨테이너 동작</span><span class="en">Container behavior</span></span></div><div class="scpb">
+      <div><div class="scpcd"><span class="hl">.></span> first line<br>continued without prefix<br>still inside indent<br><br>outside — empty line ends</div><div class="scpds"><span class="ko">lazy continuation — 접두사 없이도 빈 줄까지 컨테이너 안</span><span class="en">Lazy continuation — no prefix needed until empty line</span></div></div>
+      <div><div class="scpcd"><span class="hl">.></span> depth 1<br><span class="hl">..></span> depth 2 nested<br>still depth 2</div><div class="scpds"><span class="ko">더 깊은 depth는 중첩 — <code>&gt; &gt;</code>와 동일한 패턴</span><span class="en">Deeper depth = nesting — same pattern as <code>&gt; &gt;</code></span></div></div>
+      <div><div class="scpcd"><span class="hl">.></span> text + **bold** `code` ~~strike~~</div><div class="scpds"><span class="ko">인라인 마크다운 자유 사용</span><span class="en">All inline markdown</span></div></div>
+      <div><div class="scpcd"><span class="hl">.></span> inner blocks work:<br><span class="hl">.></span> > blockquote inside<br><span class="hl">.></span> - list inside</div><div class="scpds"><span class="ko">내부에 다른 블록 포함 가능 (정방향)</span><span class="en">Other blocks inside indent (forward)</span></div></div>
+    </div></div>
+    <div class="scpc scpno"><div class="scph"><span class="scpi">✕</span><span><span class="ko">역방향 — 다른 블록 내부에서 사용 불가</span><span class="en">Reverse — not inside other blocks</span></span></div><div class="scpb">
+      <div><div class="scpcd"><span class="dm">> <span class="hl">.></span> indent in quote</span></div><div class="scpds"><span class="ko">blockquote 내부에서 .> 불가</span><span class="en">.> inside blockquote — not allowed</span></div></div>
+      <div><div class="scpcd"><span class="dm">- <span class="hl">.></span> indent in list</span></div><div class="scpds"><span class="ko">리스트 내부에서 .> 불가</span><span class="en">.> inside list item — not allowed</span></div></div>
+      <div><div class="scpcd"><span class="dm">| <span class="hl">.></span> cell | tbl</span></div><div class="scpds"><span class="ko">테이블 셀 내부에서 .> 불가</span><span class="en">.> inside table cell — not allowed</span></div></div>
+      <div><div class="scpcd"><span class="dm">```<br><span class="hl">.></span> in code<br>```</span></div><div class="scpds"><span class="ko">코드 블록 내부 — 리터럴 텍스트</span><span class="en">Inside code block — literal text</span></div></div>
+    </div></div>
+  </div>
+  <div class="scpr"><div class="scprt"><span class="ko">왜 &gt; 와 동일한 모델인가</span><span class="en">Why the same model as &gt;</span></div><div class="scprb"><span class="ko">"들여쓰기"의 멘탈 모델은 <strong style="color:var(--text)">영역</strong>입니다 — 줄 단위 선언이 아닙니다. 워드 프로세서에서 indent는 해제 전까지 유지됩니다.<br><br>마크다운의 <code style="font-family:var(--mono);color:var(--blue)">&gt;</code>가 lazy continuation을 지원하는 이유가 정확히 이것입니다 — <strong style="color:var(--text)">쓰는 사람의 자연스러움</strong>을 우선한 설계.<br><br><code style="font-family:var(--mono);color:var(--accent)">.></code>는 이 검증된 패턴을 따릅니다. 접두사로 영역이 시작되고, 빈 줄로 종료됩니다.<br><br>역방향은 금지 — <code style="font-family:var(--mono);color:var(--accent)">.></code>는 항상 줄의 시작(column 0)에서만 새 컨테이너를 엽니다.</span><span class="en">The mental model of "indentation" is an <strong style="color:var(--text)">area</strong>, not a per-line declaration. In word processors, indent persists until explicitly removed.<br><br>This is exactly why Markdown's <code style="font-family:var(--mono);color:var(--blue)">&gt;</code> supports lazy continuation — <strong style="color:var(--text)">prioritizing natural writing flow</strong>.<br><br><code style="font-family:var(--mono);color:var(--accent)">.></code> follows this proven pattern. A prefix opens the area; an empty line closes it.<br><br>Reverse is forbidden — <code style="font-family:var(--mono);color:var(--accent)">.></code> only opens a new container at column 0.</span></div></div>
+</section>
+
+<section class="pvs">
+  <div class="sl">05 — Live Preview</div>
+  <div class="st"><span class="ko">직접 써보세요</span><span class="en">Try it yourself</span></div>
+  <div class="pvc"><div class="pvt"><span class="dot"></span> .> Indent Renderer v0.1</div><div class="pvsp"><div class="ep"><div class="pvl">markdown + .> syntax</div><div class="editor-wrap"><div class="line-nums" id="lineNums"></div><textarea id="mdEditor" spellcheck="false"></textarea></div></div><div class="rp"><div class="pvl">rendered output<div class="guide-toggle on" id="guideToggle" onclick="toggleGuides()"><span>GUIDES</span><div class="guide-switch"></div></div></div><div class="ro" id="mdOutput"></div></div></div></div>
+</section>
+
+<section class="rats">
+  <div class="sl">06 — Rationale</div>
+  <div class="st"><span class="ko">왜 .> 인가</span><span class="en">Why .></span></div>
+  <div class="ratl">
+    <div class="rati"><div class="ratn">01</div><div><h4><span class="ko">기존 문법과 무충돌</span><span class="en">No conflict with existing syntax</span></h4><p><span class="ko">줄의 시작이 <code>.></code>인 경우는 현재 어떤 파서에서도 특별한 의미가 없습니다.</span><span class="en"><code>.></code> at line start has no special meaning in any current parser.</span></p></div></div>
+    <div class="rati"><div class="ratn">02</div><div><h4><span class="ko">시각적 직관성</span><span class="en">Visual intuitiveness</span></h4><p><span class="ko">점의 개수 = 깊이. 소스만 봐도 구조가 보입니다.</span><span class="en">Dots = depth. Structure is visible in source alone.</span></p></div></div>
+    <div class="rati"><div class="ratn">03</div><div><h4><span class="ko">시맨틱 순수성</span><span class="en">Semantic purity</span></h4><p><span class="ko"><code>></code>는 인용, <code>.></code>는 들여쓰기. 의도와 렌더링이 일치합니다.</span><span class="en"><code>></code> for quoting, <code>.></code> for indenting. Intent matches rendering.</span></p></div></div>
+    <div class="rati"><div class="ratn">04</div><div><h4><span class="ko">점진적 도입</span><span class="en">Graceful degradation</span></h4><p><span class="ko">미지원 파서에서는 일반 텍스트로 표시됩니다.</span><span class="en">Unsupported parsers display it as plain text.</span></p></div></div>
+    <div class="rati"><div class="ratn">05</div><div><h4><span class="ko">구현 용이성</span><span class="en">Easy to implement</span></h4><p><span class="ko">정규식 한 줄 <code>/^(\.{1,4})&gt;\s(.+)$/</code>로 파싱 가능합니다.</span><span class="en">One regex <code>/^(\.{1,4})&gt;\s(.+)$/</code> handles all parsing.</span></p></div></div>
+    <div class="rati"><div class="ratn">06</div><div><h4><span class="ko">타이핑 한 동작</span><span class="en">One-key typing flow</span></h4><p><span class="ko"><code>.</code>과 <code>&gt;</code>는 같은 물리 키입니다. <kbd style="font-family:var(--mono);font-size:0.85em;background:var(--surface-2);border:1px solid var(--border);padding:1px 6px;border-radius:3px">.</kbd> → <kbd style="font-family:var(--mono);font-size:0.85em;background:var(--surface-2);border:1px solid var(--border);padding:1px 6px;border-radius:3px">Shift</kbd>+<kbd style="font-family:var(--mono);font-size:0.85em;background:var(--surface-2);border:1px solid var(--border);padding:1px 6px;border-radius:3px">.</kbd> — 손가락이 키에서 떠나지 않습니다. 깊이를 늘리는 것도 <code>.</code>을 한 번 더 누르는 것뿐입니다.</span><span class="en"><code>.</code> and <code>&gt;</code> share the same physical key. <kbd style="font-family:var(--mono);font-size:0.85em;background:var(--surface-2);border:1px solid var(--border);padding:1px 6px;border-radius:3px">.</kbd> → <kbd style="font-family:var(--mono);font-size:0.85em;background:var(--surface-2);border:1px solid var(--border);padding:1px 6px;border-radius:3px">Shift</kbd>+<kbd style="font-family:var(--mono);font-size:0.85em;background:var(--surface-2);border:1px solid var(--border);padding:1px 6px;border-radius:3px">.</kbd> — your finger never leaves the key. Deeper indent is just one more <code>.</code> press.</span></p></div></div>
+  </div>
+</section>
+
+<section class="spcs">
+  <div class="sl">07 — Spec Draft</div>
+  <div class="st"><span class="ko">구현 명세 초안</span><span class="en">Implementation spec draft</span></div>
+  <div class="spcb"><span class="rule">RULE 1</span>  <span class="ko">.> 는 container block이다 — &gt; (blockquote)와 동일한 모델</span><span class="en">.> is a container block — same model as &gt; (blockquote)</span>
+<span class="rule">RULE 2</span>  <span class="ko">줄 시작이 /^\.{1,N}&gt; / 이면 해당 depth의 indent container를 연다</span><span class="en">If line starts with /^\.{1,N}&gt; /, open an indent container at that depth</span>
+<span class="rule">RULE 3</span>  <span class="ko">점(.) 개수 = indent depth (권장 최대: 4)</span><span class="en">Dot count = indent depth (recommended max: 4)</span>
+<span class="rule">RULE 4</span>  <span class="ko">&gt; 뒤 공백 1개 필수, 이후 콘텐츠</span><span class="en">One space required after &gt;, then content</span>
+<span class="rule">RULE 5</span>  <span class="ko">lazy continuation — 접두사 없는 다음 줄은 현재 컨테이너 안에 속한다</span><span class="en">Lazy continuation — lines without prefix belong to current container</span>
+<span class="rule">RULE 6</span>  <span class="ko">빈 줄이 컨테이너를 종료한다</span><span class="en">An empty line closes the container</span>
+<span class="rule">RULE 7</span>  <span class="ko">더 깊은 depth(.&gt; → ..&gt;)는 중첩 — &gt; &gt; 와 동일한 패턴</span><span class="en">Deeper depth (.&gt; → ..&gt;) means nesting — same as &gt; &gt;</span>
+<span class="rule">RULE 8</span>  <span class="ko">인라인 마크다운 + 내부 블록(blockquote, list, code) 모두 허용</span><span class="en">Inline markdown + inner blocks (blockquote, list, code) all allowed</span>
+<span class="rule">RULE 9</span>  HTML: &lt;div class="md-indent md-indent-{N}"&gt;
+<span class="rule">RULE 10</span> <span class="note">[<span class="ko">역방향 금지</span><span class="en">REV BAN</span>]</span> <span class="ko">다른 블록 내부에서 .&gt; 사용 불가 — column 0에서만 동작</span><span class="en">.&gt; cannot be used inside other blocks — column 0 only</span>
+
+<span class="note">NOTE</span>  <span class="ko">종료 조건 요약: (1) 빈 줄 (2) 더 낮은 depth의 .&gt; (3) 파일 끝</span><span class="en">Termination: (1) empty line (2) shallower .&gt; (3) end of file</span>
+<span class="note">NOTE</span>  CSS: padding-left: calc(N × 1.5em)
+<span class="note">NOTE</span>  A11y: role="group" aria-level="{N}"</div>
+</section>
+
+<section class="whys">
+  <div class="sl">08 — Why This Matters</div>
+  <div class="st"><span class="ko">사람과 AI 모두를 위한 구조</span><span class="en">Structure for humans and AI alike</span></div>
+  <div class="whyc"><p><span class="ko">플랫 텍스트는 맥락을 잃습니다. 같은 정보도 계층이 명시되면 이해 속도와 정확도가 달라집니다.</span><span class="en">Flat text loses context. The same information, when layered explicitly, is understood faster and more accurately.</span></p></div>
+  <div class="whycmp">
+    <div class="whyp"><div class="whyph">👤 <span class="ko">사람이 읽을 때</span><span class="en">When humans read</span></div><div class="whypb"><div class="whyf"><div class="whyfl">Flat</div><div class="whyft">Architecture overview<br>Frontend config<br>Backend config<br>API layer<br>Data layer</div></div><div class="whya">→</div><div class="whyl"><div class="whyll">Layered</div><div class="whylt"><span style="color:var(--text)">Architecture overview</span><br><span style="padding-left:1.5em;color:var(--text-dim)">Frontend config</span><br><span style="padding-left:1.5em;color:var(--text-dim)">Backend config</span><br><span style="padding-left:3em;color:#666">API layer</span><br><span style="padding-left:3em;color:#666">Data layer</span></div></div></div><div class="whypp"><span class="ko">시선의 흐름만으로 "어디에 속하는 정보인지" 즉시 파악. 읽는 속도가 아니라 <strong>인지하는 속도</strong>의 문제.</span><span class="en">Eye flow alone reveals "where this belongs." Not reading speed — <strong>cognitive speed</strong>.</span></div></div>
+    <div class="whyp"><div class="whyph">🤖 <span class="ko">AI가 읽을 때</span><span class="en">When AI reads</span></div><div class="whypb"><div class="whyf"><div class="whyfl">Flat</div><div class="whyft" style="font-family:var(--mono);font-size:0.78rem">Tokens:<br>[Architecture] [overview]<br>[Frontend] [config] [Backend]<br>[config] [API] [layer]<br><span style="color:var(--red)"><span class="ko">→ 종속 관계 불명확</span><span class="en">→ Hierarchy unclear</span></span></div></div><div class="whya">→</div><div class="whyl"><div class="whyll">Layered</div><div class="whylt" style="font-family:var(--mono);font-size:0.78rem"><span style="color:var(--accent)">.></span> depth=1<br><span style="color:var(--accent)">..></span> depth=2 <span style="color:#555">← child</span><br><span style="color:var(--accent)">..></span> depth=2 <span style="color:#555">← sibling</span><br><span style="color:var(--accent)">...></span> depth=3 <span style="color:#555">← child</span><br><span style="color:var(--accent)"><span class="ko">→ 트리 즉시 파싱</span><span class="en">→ Tree parsed instantly</span></span></div></div></div><div class="whypp"><span class="ko">LLM은 토큰에서 계층을 추론해야 합니다. <code style="font-family:var(--mono);color:var(--accent);font-size:0.85em">.></code>는 <strong>명시적 트리 구조</strong>를 제공해 맥락 파악 비용을 줄입니다.</span><span class="en">LLMs must infer hierarchy from tokens. <code style="font-family:var(--mono);color:var(--accent);font-size:0.85em">.></code> provides an <strong>explicit tree structure</strong>, reducing context-parsing cost.</span></div></div>
+  </div>
+  <div class="whybt"><span class="ko">마크다운은 이미 사람과 기계 모두가 읽는 포맷입니다. 계층을 명시적으로 표현하는 것은 양쪽 모두의 이해를 돕는 가장 작은 단위의 개선입니다.</span><span class="en">Markdown is already read by both humans and machines. Explicit hierarchy is the smallest improvement that helps both.</span></div>
+</section>
+
+<footer>Markdown Indent Proposal — .> Syntax · 2026</footer>
+
+<script>
+const EC={ko:`# .> 인덴트 렌더러 데모
+
+일반 문단입니다. **볼드**, *이탤릭*, \`인라인 코드\`, ~~취소선~~.
+
+## 기본 마크다운
+
+> 블록인용은 이렇게.
+> 여러 줄도 가능.
+
+- 순서 없는 리스트 1
+- 순서 없는 리스트 2
+- 순서 없는 리스트 3
+
+1. 순서 있는 리스트
+2. 두 번째
+3. 세 번째
+
+---
+
+\`\`\`js
+function hello() {
+  console.log("Hello, .> indent!");
+}
+\`\`\`
+
+## .> 컨테이너 블록
+
+.> 이 줄에서 indent 시작
+접두사 없이도 계속 안에 있음 (lazy continuation)
+이 줄도 마찬가지 — 빈 줄이 올 때까지
+
+밖으로 빠져나옴. 빈 줄이 컨테이너를 닫았음.
+
+## 중첩 (depth 전환)
+
+.> depth 1 시작
+..> depth 2로 중첩 진입
+이 줄은 depth 2 안 (lazy)
+...> depth 3까지 가능
+
+빈 줄로 전부 종료.
+
+## .> + 인라인 마크다운
+
+.> **볼드**, *이탤릭*, \`코드\`, ~~취소선~~ 모두 사용 가능
+접두사 없는 줄에서도 **인라인** 마크다운 *동작*
+
+## 정방향 합성
+
+인용구를 들여쓰기:
+..> > "코드는 읽히는 횟수가 쓰이는 횟수보다 많다."
+
+리스트를 들여쓰기:
+.> - Windows x64
+.> - macOS arm64
+.> - Linux amd64
+
+코드 블록을 들여쓰기:
+.> \`\`\`go
+.> func main() {
+.>   fmt.Println("indented!")
+.> }
+.> \`\`\`
+
+## 실전 활용
+
+프로젝트 구조:
+.> **아키텍처 개요**
+..> 프론트엔드 — React + TypeScript
+..> 백엔드 — Go + gRPC
+...> 인증: JWT
+...> 데이터: PostgreSQL`,en:`# .> Indent Renderer Demo
+
+A normal paragraph. **bold**, *italic*, \`inline code\`, ~~strikethrough~~.
+
+## Standard Markdown
+
+> Blockquote renders like this.
+> Multiple lines too.
+
+- Unordered item 1
+- Unordered item 2
+- Unordered item 3
+
+1. Ordered list
+2. Second
+3. Third
+
+---
+
+\`\`\`js
+function hello() {
+  console.log("Hello, .> indent!");
+}
+\`\`\`
+
+## .> Container block
+
+.> This line starts an indent
+No prefix needed — still inside (lazy continuation)
+This line too — until an empty line
+
+Outside now. The empty line closed the container.
+
+## Nesting (depth transitions)
+
+.> depth 1 starts here
+..> entering depth 2 (nested)
+this line is inside depth 2 (lazy)
+...> up to depth 3
+
+Empty line closes all.
+
+## .> + inline markdown
+
+.> **bold**, *italic*, \`code\`, ~~strike~~ all work
+Lazy lines support **inline** markdown *too*
+
+## Forward composition
+
+Indented blockquote:
+..> > "Code is read more often than written."
+
+Indented list:
+.> - Windows x64
+.> - macOS arm64
+.> - Linux amd64
+
+Indented code block:
+.> \`\`\`go
+.> func main() {
+.>   fmt.Println("indented!")
+.> }
+.> \`\`\`
+
+## Real-world usage
+
+Project structure:
+.> **Architecture overview**
+..> Frontend — React + TypeScript
+..> Backend — Go + gRPC
+...> Auth: JWT
+...> Data: PostgreSQL`};
+
+function setLang(l){document.documentElement.setAttribute('lang',l);document.getElementById('btnKo').classList.toggle('active',l==='ko');document.getElementById('btnEn').classList.toggle('active',l==='en');document.getElementById('mdEditor').value=EC[l];update();}
+
+function inl(t){let s=t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');s=s.replace(/\*\*(.+?)\*\*/g,'<span class="md-bold">$1</span>');s=s.replace(/\*(.+?)\*/g,'<span class="md-italic">$1</span>');s=s.replace(/~~(.+?)~~/g,'<span class="md-strike">$1</span>');s=s.replace(/`(.+?)`/g,'<code style="font-family:var(--mono);font-size:.85em;background:var(--surface);padding:1px 5px;border-radius:2px;color:var(--orange)">$1</code>');s=s.replace(/\[(.+?)\]\((.+?)\)/g,'<a href="$2" style="color:var(--blue);text-decoration:underline">$1</a>');return s;}
+function esc(t){return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function si(l){const m=l.match(/^(\.{1,4})>\s(.*)$/);return m?{d:m[1].length,c:m[2]}:null;}
+function wi(d,h){return`<div class="md-indent" style="padding-left:${d*1.5}em;border-left:2px solid var(--accent)">${h}</div>`;}
+
+function render(src){
+  const L=src.split('\n'),O=[];let i=0;
+  while(i<L.length){
+    const l=L[i];
+
+    // fenced code block
+    const f=l.match(/^```(\w*)$/);
+    if(f){const ln=f[1],c=[];i++;while(i<L.length&&!L[i].match(/^```\s*$/)){c.push(esc(L[i]));i++;}i++;let b='';if(ln)b+=`<div class="md-code-lang">${esc(ln)}</div>`;b+=`<div class="md-code-block">${c.join('\n')}</div>`;O.push(b);continue;}
+
+    // .> indent container
+    const ind=si(l);
+    if(ind){
+      const d=ind.d, firstContent=ind.c;
+
+      // .> + fenced code inside indent
+      const iF=firstContent.match(/^```(\w*)$/);
+      if(iF){const ln=iF[1],c=[];i++;while(i<L.length){const x=si(L[i]);if(x&&x.c.match(/^```\s*$/)){i++;break;}if(x){c.push(esc(x.c));}else if(L[i].match(/^```\s*$/)){i++;break;}else{c.push(esc(L[i]));}i++;}let b='';if(ln)b+=`<div class="md-code-lang">${esc(ln)}</div>`;b+=`<div class="md-code-block">${c.join('\n')}</div>`;O.push(wi(d,b));continue;}
+
+      // .> + blockquote inside indent
+      const bq=firstContent.match(/^>\s?(.*)$/);
+      if(bq){const bl=[bq[1]];let j=i+1;while(j<L.length){const x=si(L[j]);if(x&&x.d===d){const nb=x.c.match(/^>\s?(.*)$/);if(nb){bl.push(nb[1]);j++;continue;}}break;}i=j;O.push(wi(d,`<div class="md-blockquote">${bl.map(x=>inl(x)).join('<br>')}</div>`));continue;}
+
+      // .> + list inside indent
+      const li=firstContent.match(/^[-*]\s(.+)$/);
+      if(li){const it=[li[1]];let j=i+1;while(j<L.length){const x=si(L[j]);if(x&&x.d===d){const nl=x.c.match(/^[-*]\s(.+)$/);if(nl){it.push(nl[1]);j++;continue;}}break;}i=j;O.push(wi(d,`<ul class="md-ul">${it.map(t=>`<li>${inl(t)}</li>`).join('')}</ul>`));continue;}
+
+      // .> container with lazy continuation
+      // collect all lines until empty line
+      const lines=[firstContent];
+      i++;
+      while(i<L.length){
+        // empty line → close container
+        if(L[i].trim()==='') break;
+        // new .> prefix?
+        const next=si(L[i]);
+        if(next){
+          if(next.d>d){
+            // deeper → nested indent, render recursively
+            // collect the nested block as sub-source
+            const nested=[L[i]];
+            i++;
+            while(i<L.length){
+              if(L[i].trim()==='') break;
+              const nn=si(L[i]);
+              // if same or deeper depth, or lazy continuation of nested
+              if(nn && nn.d<=d) break; // back to our level or shallower → stop
+              nested.push(L[i]);
+              i++;
+            }
+            // flush current lines first
+            if(lines.length>0){
+              O.push(wi(d,lines.map(x=>inl(x)).join('<br>')));
+              lines.length=0;
+            }
+            // render nested block
+            O.push(wi(d,render(nested.join('\n'))));
+            continue;
+          } else if(next.d===d){
+            // same depth with prefix → continue container, add content
+            lines.push(next.c);
+            i++;
+            continue;
+          } else {
+            // shallower → close this container
+            break;
+          }
+        }
+        // no prefix → lazy continuation
+        lines.push(L[i]);
+        i++;
+      }
+      if(lines.length>0){
+        O.push(wi(d,lines.map(x=>inl(x)).join('<br>')));
+      }
+      continue;
+    }
+
+    // heading
+    let m;
+    if(m=l.match(/^(#{1,4})\s(.+)$/)){const lv=m[1].length;const cls=lv<=2?`md-h${lv}`:'md-h3';O.push(`<div class="${cls}">${inl(m[2])}</div>`);i++;continue;}
+    // hr
+    if(l.match(/^(-{3,}|\*{3,}|_{3,})\s*$/)){O.push('<hr class="md-hr">');i++;continue;}
+    // blockquote with lazy continuation
+    if(l.match(/^>\s/)){const bl=[];while(i<L.length){if(L[i].trim()==='')break;if(L[i].match(/^>\s?/)){bl.push(L[i].replace(/^>\s?/,''));}else{bl.push(L[i]);}i++;}O.push(`<div class="md-blockquote">${bl.map(x=>inl(x)).join('<br>')}</div>`);continue;}
+    // ul
+    if(l.match(/^[-*]\s/)){const it=[];while(i<L.length&&L[i].match(/^[-*]\s/)){it.push(L[i].replace(/^[-*]\s/,''));i++;}O.push(`<ul class="md-ul">${it.map(t=>`<li>${inl(t)}</li>`).join('')}</ul>`);continue;}
+    // ol
+    if(l.match(/^\d+\.\s/)){const it=[];while(i<L.length&&L[i].match(/^\d+\.\s/)){it.push(L[i].replace(/^\d+\.\s/,''));i++;}O.push(`<ol class="md-ol">${it.map(t=>`<li>${inl(t)}</li>`).join('')}</ol>`);continue;}
+    // empty
+    if(l.trim()===''){O.push('<div style="height:.5em"></div>');i++;continue;}
+    // paragraph
+    O.push(`<div class="md-p">${inl(l)}</div>`);i++;
+  }
+  return O.join('\n');
+}
+
+function toggleGuides(){const t=document.getElementById('guideToggle');const o=document.getElementById('mdOutput');t.classList.toggle('on');o.classList.toggle('no-guides');}
+
+const ed=document.getElementById('mdEditor'),out=document.getElementById('mdOutput'),ln=document.getElementById('lineNums');
+function updateLines(){const n=ed.value.split('\n').length;const lh=parseFloat(getComputedStyle(ed).lineHeight)||24;const visible=Math.ceil(ed.clientHeight/lh)+2;const total=Math.max(n,visible);let h='';for(let i=1;i<=total;i++)h+=`<div>${i}</div>`;ln.innerHTML=h;}
+function syncScroll(){ln.scrollTop=ed.scrollTop;}
+function update(){out.innerHTML=render(ed.value);updateLines();}
+ed.addEventListener('input',update);
+ed.addEventListener('scroll',syncScroll);
+ed.value=EC.en;update();updateLines();
+</script>
+</body>
+</html>
