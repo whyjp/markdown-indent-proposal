@@ -69,6 +69,6 @@ In this context, the inability to express simple hierarchical indentation is a r
 This proposal may not align with everyone's priorities, and I fully respect the conservative approach CommonMark takes toward extending the spec. But I believe `.>` represents the smallest possible addition that addresses a genuine, recurring need — for both human authors and the AI systems that increasingly work alongside them.
 
 A detailed interactive write-up with live preview is available here:
-**[→ Full proposal with live renderer](#)** *(link to hosted page)*
+**[→ Full proposal with live renderer](https://whyjp.github.io/markdown-indent-proposal/)**
 
 I would genuinely appreciate any feedback, pushback, or alternative approaches the community might suggest. Thank you for considering this.
