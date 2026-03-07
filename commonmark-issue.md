@@ -80,5 +80,9 @@ I'd genuinely like to know:
 - Have you run into this limitation in practice?
 - Is `.>` the right shape, or would you design it differently?
 
+Feedback and alternative ideas are welcome — open an
+[issue](https://github.com/whyjp/markdown-indent-proposal/issues) on the
+[GitHub repo](https://github.com/whyjp/markdown-indent-proposal).
+
 This may never make it into any spec. But the problem is real, and the workarounds
 aren't cutting it.

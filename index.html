@@ -338,9 +338,12 @@ still inside depth 2
     <div class="whyp"><div class="whyph">🤖 <span class="ko">AI가 읽을 때</span><span class="en">When AI reads</span></div><div class="whypb"><div class="whyf"><div class="whyfl">Flat</div><div class="whyft" style="font-family:var(--mono);font-size:0.78rem">Tokens:<br>[Architecture] [overview]<br>[Frontend] [config] [Backend]<br>[config] [API] [layer]<br><span style="color:var(--red)"><span class="ko">→ 종속 관계 불명확</span><span class="en">→ Hierarchy unclear</span></span></div></div><div class="whya">→</div><div class="whyl"><div class="whyll">Layered</div><div class="whylt" style="font-family:var(--mono);font-size:0.78rem"><span style="color:var(--accent)">.></span> depth=1<br><span style="color:var(--accent)">..></span> depth=2 <span style="color:#555">← child</span><br><span style="color:var(--accent)">..></span> depth=2 <span style="color:#555">← sibling</span><br><span style="color:var(--accent)">...></span> depth=3 <span style="color:#555">← child</span><br><span style="color:var(--accent)"><span class="ko">→ 트리 즉시 파싱</span><span class="en">→ Tree parsed instantly</span></span></div></div></div><div class="whypp"><span class="ko">LLM은 토큰에서 계층을 추론해야 합니다. <code style="font-family:var(--mono);color:var(--accent);font-size:0.85em">.></code>가 <strong>명시적 트리 구조</strong>를 제공하면 맥락 파악 비용이 줄어듭니다.</span><span class="en">LLMs must infer hierarchy from tokens. <code style="font-family:var(--mono);color:var(--accent);font-size:0.85em">.></code> provides an <strong>explicit tree structure</strong>, reducing context-parsing cost.</span></div></div>
   </div>
   <div class="whybt"><span class="ko">마크다운은 이미 사람과 기계 모두 읽는 포맷입니다. 계층을 명시하는 것은 양쪽 모두에게 도움이 되는 가장 작은 개선입니다.</span><span class="en">Markdown is already read by both humans and machines. Explicit hierarchy is the smallest improvement that helps both.</span></div>
+  <div style="margin-top:2rem;text-align:center;font-size:0.88rem;line-height:1.8;color:var(--text-dim);">
+    <p><span class="ko">의견이나 제안은 <a href="https://github.com/whyjp/markdown-indent-proposal/issues" style="color:var(--accent);text-decoration:underline">GitHub 이슈</a>로 남겨 주세요.</span><span class="en">Feedback and ideas are welcome — open an <a href="https://github.com/whyjp/markdown-indent-proposal/issues" style="color:var(--accent);text-decoration:underline">issue on GitHub</a>.</span></p>
+  </div>
 </section>
 
-<footer>Markdown Indent Proposal — .> Syntax · 2026</footer>
+<footer>Markdown Indent Proposal — .> Syntax · 2026 · <a href="https://github.com/whyjp/markdown-indent-proposal" style="color:var(--text-dim);text-decoration:underline">GitHub</a></footer>
 
 <script>
 const EC={ko:`# .> 인덴트 렌더러 데모
