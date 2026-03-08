@@ -39,7 +39,7 @@ markdown-it plugin (npm)
 | # | Deliverable | PRD | Status |
 |---|------------|-----|--------|
 | 1 | markdown-it-dot-indent (npm) | [01-markdown-it-plugin.md](01-markdown-it-plugin.md) | [Published](https://www.npmjs.com/package/markdown-it-dot-indent) |
-| 2 | VSCode Extension | [02-vscode-extension.md](02-vscode-extension.md) | Next |
+| 2 | VSCode Extension (sample) | [02-vscode-extension.md](02-vscode-extension.md) | Sample |
 | 3 | Obsidian Plugin | 03-obsidian-plugin.md | Planned |
 
 ## Demo — npm 패키지 시연
@@ -55,7 +55,9 @@ npm run demo
 - `demo-output.html`: 생성된 HTML (브라우저에서 확인)
 - `index.html`: 브라우저용 인터랙티브 데모 (자체 파서)
 
-**참고**: Crossnote(MPE) 확장 파서는 ESM/Electron 환경 이슈로 미동작. VSCode 전용 확장으로 대체 예정.
+- `vscode-markdown-dot-indent/`: VSCode 확장 **샘플** — 다른 확장 제작자/Obsidian에 제안 시 참고용
+
+**참고**: Crossnote(MPE) 확장 파서는 ESM/Electron 환경 이슈로 미동작.
 
 ## Repositories & links
 
@@ -105,7 +107,7 @@ Phase 1 — Foundation (done)
 
 Phase 2 — Ecosystem (current)
   ├─ [x] npm publish (markdown-it-dot-indent)
-  ├─ [ ] VSCode extension (wrapping markdown-it plugin)
+  ├─ [x] VSCode extension sample (vscode-markdown-dot-indent, 제안용)
   └─ [ ] Obsidian community plugin
 
 Phase 3 — Advocacy

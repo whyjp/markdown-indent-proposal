@@ -1,0 +1,29 @@
+{
+  "name": "markdown-dot-indent",
+  "displayName": "Markdown Dot Indent",
+  "description": ".> indent syntax for Markdown preview",
+  "version": "0.1.0",
+  "publisher": "whyjp",
+  "engines": {
+    "vscode": "^1.74.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onLanguage:markdown"
+  ],
+  "main": "./extension.js",
+  "contributes": {
+    "markdown.markdownItPlugins": true,
+    "markdown.previewStyles": [
+      "./style.css"
+    ]
+  },
+  "dependencies": {
+    "markdown-it-dot-indent": "^0.1.3"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.74.0"
+  }
+}

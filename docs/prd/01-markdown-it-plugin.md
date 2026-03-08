@@ -240,22 +240,22 @@ markdown-it 생태계의 표준 테스트 포맷(`.txt` fixture)을 사용한다
     - 재귀 tokenize 호출
     - state 복원
 
-[ ] 3. Plugin entry (index.mjs)
+[x] 3. Plugin entry (index.mjs)
     - md.block.ruler.before('blockquote', 'dot_indent', rule, { alt: [...] })
     - renderer rules 등록 (dot_indent_open, dot_indent_close)
     - options 처리 (maxDepth)
 
-[ ] 4. Renderer rules
+[x] 4. Renderer rules
     - dot_indent_open: <div class="md-indent md-indent-{depth}" role="group" aria-level="{depth}">
     - dot_indent_close: </div>
 
-[ ] 5. Test fixtures 작성
-    - basic / nesting / lazy / composition / edge-cases
+[x] 5. Test fixtures 작성
+    - basic / nesting / lazy / composition / edge-cases (test/verify.mjs)
 
-[ ] 6. README.md
+[x] 6. README.md
     - 설치 / 사용법 / 옵션 / CSS / 예시
 
-[ ] 7. npm publish 준비
+[x] 7. npm publish 준비
     - .npmignore / LICENSE / keywords
     - npm pack 로컬 검증
 ```
@@ -275,11 +275,11 @@ devDependencies:
 
 ## Success criteria
 
-- [ ] 모든 `.txt` fixture 테스트 통과
-- [ ] `markdown-it` 기본 규칙(blockquote, list, code 등)과 충돌 없음
-- [ ] `.>` 미지원 파서에서 plain text로 graceful degradation
-- [ ] npm publish 완료, `npx markdown-it-dot-indent` 또는 `require()`로 즉시 사용
-- [ ] VSCode markdown extension에서 래핑 가능 (ESM export)
+- [x] 모든 fixture 테스트 통과 (test/verify.mjs)
+- [x] `markdown-it` 기본 규칙(blockquote, list, code, fence 등)과 충돌 없음
+- [x] `.>` 미지원 파서에서 plain text로 graceful degradation
+- [x] npm publish 완료, `require()` 또는 `import`로 즉시 사용
+- [x] VSCode markdown extension에서 래핑 가능 (CJS + ESM dual export)
 
 ## Risk & mitigation
 
