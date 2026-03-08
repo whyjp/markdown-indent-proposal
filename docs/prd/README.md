@@ -38,7 +38,7 @@ markdown-it plugin (npm)
 
 | # | Deliverable | PRD | Status |
 |---|------------|-----|--------|
-| 1 | markdown-it-dot-indent (npm) | [01-markdown-it-plugin.md](01-markdown-it-plugin.md) | Draft |
+| 1 | markdown-it-dot-indent (npm) | [01-markdown-it-plugin.md](01-markdown-it-plugin.md) | Ready |
 | 2 | VSCode Extension | 02-vscode-extension.md | Planned |
 | 3 | Obsidian Plugin | 03-obsidian-plugin.md | Planned |
 
@@ -85,7 +85,7 @@ Phase 1 — Foundation (current)
   ├─ [x] .> syntax spec draft
   ├─ [x] Interactive demo (index.html)
   ├─ [x] CommonMark issue post
-  ├─ [ ] markdown-it plugin PRD
+  ├─ [x] markdown-it plugin PRD
   └─ [ ] markdown-it plugin implementation
 
 Phase 2 — Ecosystem
