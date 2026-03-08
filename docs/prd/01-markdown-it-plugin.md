@@ -12,6 +12,7 @@ markdown-it용 `.>` 들여쓰기 파서 플러그인.
 | Reference impl | blockquote rule (`rules_block/blockquote.mjs`) |
 | Precedent | `markdown-it-container` (`::: name` block) |
 | License | MIT |
+| Repo | <https://github.com/whyjp/markdown-it-dot-indent> |
 
 ## Problem
 

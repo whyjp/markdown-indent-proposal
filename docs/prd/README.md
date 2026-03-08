@@ -38,7 +38,7 @@ markdown-it plugin (npm)
 
 | # | Deliverable | PRD | Status |
 |---|------------|-----|--------|
-| 1 | markdown-it-dot-indent (npm) | [01-markdown-it-plugin.md](01-markdown-it-plugin.md) | Ready |
+| 1 | markdown-it-dot-indent (npm) | [01-markdown-it-plugin.md](01-markdown-it-plugin.md) | [구현체](https://github.com/whyjp/markdown-it-dot-indent) |
 | 2 | VSCode Extension | 02-vscode-extension.md | Planned |
 | 3 | Obsidian Plugin | 03-obsidian-plugin.md | Planned |
 
