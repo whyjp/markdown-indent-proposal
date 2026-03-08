@@ -13,7 +13,7 @@
 ```text
 markdown-it plugin (npm)
     ├─ wraps into → VSCode Extension (marketplace)
-    └─ parallel  → Obsidian Plugin (community)
+    └─ parallel  → Obsidian Forum (feature request)
                        ↓
               실사용 데이터 + 커뮤니티 지지
                        ↓
@@ -26,8 +26,7 @@ markdown-it plugin (npm)
 |----------|---------|------|--------|
 | P0 | markdown-it plugin (npm) | 구현체 배포 | 생태계 최대, VuePress/Docusaurus/HackMD 등 연쇄 채택 |
 | P1 | VSCode Markdown Extension | 구현체 배포 | markdown-it 래핑, 개발자 직접 사용 |
-| P1 | Obsidian community plugin | 구현체 배포 | 비기술 사용자 타겟, 수백만 명 |
-| P2 | Obsidian Forum — Feature Requests | 피쳐 요청 | 팀이 직접 모니터링, 커뮤니티 투표 |
+| P1 | Obsidian Forum — Feature Requests | 피쳐 요청 | 팀이 직접 모니터링, 커뮤니티 투표 (옵시디언은 자체 indent 보유, 플러그인 무의미) |
 | P2 | talk.commonmark.org — Extensions | 표준 토론 | 장문 토론 적합, 기존 디렉티브 논의 연결 |
 | P3 | Notion Feature Request | 피쳐 요청 | MD import/export 지원, indent 문법 요청 |
 | P3 | GitHub Discussions — goldmark/comrak/marked | 피쳐 요청 | 각 파서별 구현 이슈 |
@@ -40,7 +39,7 @@ markdown-it plugin (npm)
 |---|------------|-----|--------|
 | 1 | markdown-it-dot-indent (npm) | [01-markdown-it-plugin.md](01-markdown-it-plugin.md) | [Published](https://www.npmjs.com/package/markdown-it-dot-indent) |
 | 2 | VSCode Extension (sample) | [02-vscode-extension.md](02-vscode-extension.md) | Sample |
-| 3 | Obsidian Plugin | 03-obsidian-plugin.md | Planned |
+| 3 | Obsidian Forum feature request | [obsidian-forum-feature-request.md](../obsidian-forum-feature-request.md) | [Posted](https://forum.obsidian.md) |
 
 ## Demo — npm 패키지 시연
 
@@ -108,10 +107,10 @@ Phase 1 — Foundation (done)
 Phase 2 — Ecosystem (current)
   ├─ [x] npm publish (markdown-it-dot-indent)
   ├─ [x] VSCode extension sample (vscode-markdown-dot-indent, 제안용)
-  └─ [ ] Obsidian community plugin
+  └─ [~] Obsidian community plugin (옵시디언 자체 indent 보유로 무의미)
 
 Phase 3 — Advocacy
-  ├─ [ ] Obsidian Forum feature request
+  ├─ [x] Obsidian Forum feature request
   ├─ [ ] talk.commonmark.org discussion post
   ├─ [ ] Parser-specific issues (goldmark, comrak, marked)
   └─ [ ] Usage metrics & community feedback collection
