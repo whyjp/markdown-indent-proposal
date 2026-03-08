@@ -82,10 +82,10 @@ CommonMark와 충돌하지 않음.
    mental model을 유지할 수 있음.
 4. **소스 가독성** — `.>`, `..>`, `...>`로 원문만 봐도 깊이가 보임. HTML 불필요.
 5. **폴딩 가능** — 들여쓰기 블록은 목록 중첩처럼 폴드 영역으로 자연스럽게 매핑.
-6. **공유 스펙·공유 구현** — [markdown-it-dot-indent](https://www.npmjs.com/package/markdown-it-dot-indent)(npm)로 실효성 검증 중 — npm 배포, VSCode 확장, 사용 테스트. 옵시디언이 이 규칙을 채택하면 같은 패키지나 스펙을 공유해 생태계 전반의 업데이트·유지보수를 맞출 수 있습니다.
+6. **공유 스펙·공유 구현** — markdown-it-dot-indent(npm)로 실효성 검증 중 — npm 배포, VSCode 확장, 사용 테스트. 옵시디언이 이 규칙을 채택하면 같은 패키지나 스펙을 공유해 생태계 전반의 업데이트·유지보수를 맞출 수 있습니다.
 7. **안전한 폴백** — 미지원 파서에서는 일반 텍스트. 노트는 그대로 유효.
 
-**[→ 인터랙티브 데모 + 전체 명세](https://whyjp.github.io/markdown-indent-proposal/)**
+**→ 인터랙티브 데모 + 전체 명세** (whyjp.github.io/markdown-indent-proposal)
 
 ---
 
@@ -101,5 +101,5 @@ CommonMark와 충돌하지 않음.
 
 ## Related feature requests (optional)
 
-- [commonmark/commonmark-spec#825](https://github.com/commonmark/commonmark-spec/issues/825) — Proposal: Native Indent for Markdown (스펙 논의)
-- [markdown-indent-proposal](https://github.com/whyjp/markdown-indent-proposal) — 명세, 데모, 구현체
+- commonmark/commonmark-spec#825 — Proposal: Native Indent for Markdown (스펙 논의)
+- markdown-indent-proposal — 명세, 데모, 구현체

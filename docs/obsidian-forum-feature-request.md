@@ -1,5 +1,7 @@
 # Native indent syntax that doesn't conflict with CommonMark: `.>` proposal
 
+---
+
 ## Use case or problem
 
 Obsidian's Tab action and 4-space indent are **exactly what many users want** —
@@ -83,11 +85,11 @@ Back outside.
 4. **Readable source** — `.>`, `..>`, `...>` show depth in raw text. No HTML.
 5. **Foldable** — Indent blocks map naturally to fold regions (like list
    nesting).
-6. **Shared spec, shared implementation** — [markdown-it-dot-indent](https://www.npmjs.com/package/markdown-it-dot-indent) (npm) is being used to validate real-world effectiveness — npm publish, VSCode extension, and usage testing. If Obsidian adopts this rule, it can share the same package or spec, keeping updates and maintenance aligned across the ecosystem.
+6. **Shared spec, shared implementation** — markdown-it-dot-indent (npm) is being used to validate real-world effectiveness — npm publish, VSCode extension, and usage testing. If Obsidian adopts this rule, it can share the same package or spec, keeping updates and maintenance aligned across the ecosystem.
 7. **Graceful fallback** — Unsupported parsers treat it as text. Notes stay
    valid.
 
-**[→ Interactive demo + full spec](https://whyjp.github.io/markdown-indent-proposal/)**
+**→ Interactive demo + full spec** (markdown-indent-proposal)
 
 ---
 
@@ -103,5 +105,5 @@ Back outside.
 
 ## Related feature requests (optional)
 
-- [commonmark/commonmark-spec#825](https://github.com/commonmark/commonmark-spec/issues/825) — Proposal: Native Indent for Markdown (spec discussion)
-- [markdown-indent-proposal](https://github.com/whyjp/markdown-indent-proposal) — Spec, demo, and implementation
+- CommonMark spec issue 825 — Proposal: Native Indent for Markdown (spec discussion)
+- markdown-indent-proposal — Spec, demo, and implementation

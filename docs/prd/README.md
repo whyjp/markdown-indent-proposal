@@ -26,6 +26,7 @@ markdown-it plugin (npm)
 |----------|---------|------|--------|
 | P0 | markdown-it plugin (npm) | 구현체 배포 | 생태계 최대, VuePress/Docusaurus/HackMD 등 연쇄 채택 |
 | P1 | VSCode Markdown Extension | 구현체 배포 | markdown-it 래핑, 개발자 직접 사용 |
+| P1 | MPE (vscode-markdown-preview-enhanced) | 피쳐 요청 | Crossnote/markdown-it 기반, 넓은 사용자층 |
 | P1 | Obsidian Forum — Feature Requests | 피쳐 요청 | 팀이 직접 모니터링, 커뮤니티 투표 (옵시디언은 자체 indent 보유, 플러그인 무의미) |
 | P2 | talk.commonmark.org — Extensions | 표준 토론 | 장문 토론 적합, 기존 디렉티브 논의 연결 |
 | P3 | Notion Feature Request | 피쳐 요청 | MD import/export 지원, indent 문법 요청 |
@@ -40,6 +41,7 @@ markdown-it plugin (npm)
 | 1 | markdown-it-dot-indent (npm) | [01-markdown-it-plugin.md](01-markdown-it-plugin.md) | [Published](https://www.npmjs.com/package/markdown-it-dot-indent) |
 | 2 | VSCode Extension (sample) | [02-vscode-extension.md](02-vscode-extension.md) | Sample |
 | 3 | Obsidian Forum feature request | [obsidian-forum-feature-request.md](../obsidian-forum-feature-request.md) | [Posted](https://forum.obsidian.md) |
+| 4 | MPE GitHub issue | [mpe-github-issue.md](../mpe-github-issue.md) | [#2223](https://github.com/shd101wyy/vscode-markdown-preview-enhanced/issues/2223) |
 
 ## Demo — npm 패키지 시연
 
@@ -111,6 +113,7 @@ Phase 2 — Ecosystem (current)
 
 Phase 3 — Advocacy
   ├─ [x] Obsidian Forum feature request
+  ├─ [x] MPE GitHub issue (#2223)
   ├─ [ ] talk.commonmark.org discussion post
   ├─ [ ] Parser-specific issues (goldmark, comrak, marked)
   └─ [ ] Usage metrics & community feedback collection
