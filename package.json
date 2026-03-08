@@ -1,0 +1,11 @@
+{
+  "name": "markdown-indent-proposal",
+  "private": true,
+  "devDependencies": {
+    "markdown-it": "^14.1.1",
+    "markdown-it-dot-indent": "^0.1.0"
+  },
+  "scripts": {
+    "demo": "node test/demo-npm.mjs"
+  }
+}

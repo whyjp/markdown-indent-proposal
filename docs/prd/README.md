@@ -38,9 +38,24 @@ markdown-it plugin (npm)
 
 | # | Deliverable | PRD | Status |
 |---|------------|-----|--------|
-| 1 | markdown-it-dot-indent (npm) | [01-markdown-it-plugin.md](01-markdown-it-plugin.md) | [구현체](https://github.com/whyjp/markdown-it-dot-indent) |
-| 2 | VSCode Extension | 02-vscode-extension.md | Planned |
+| 1 | markdown-it-dot-indent (npm) | [01-markdown-it-plugin.md](01-markdown-it-plugin.md) | [Published](https://www.npmjs.com/package/markdown-it-dot-indent) |
+| 2 | VSCode Extension | [02-vscode-extension.md](02-vscode-extension.md) | Next |
 | 3 | Obsidian Plugin | 03-obsidian-plugin.md | Planned |
+
+## Demo — npm 패키지 시연
+
+다음 단계(VSCode/Obsidian) 전에 npm 패키지 사용을 검증한다.
+
+```bash
+npm install
+npm run demo
+```
+
+- `test/demo-npm.mjs`: npm에서 설치한 `markdown-it-dot-indent`로 `.>` 렌더링 검증
+- `demo-output.html`: 생성된 HTML (브라우저에서 확인)
+- `index.html`: 브라우저용 인터랙티브 데모 (자체 파서)
+
+**참고**: Crossnote(MPE) 확장 파서는 ESM/Electron 환경 이슈로 미동작. VSCode 전용 확장으로 대체 예정.
 
 ## Repositories & links
 
@@ -81,15 +96,15 @@ markdown-it plugin (npm)
 ## Roadmap
 
 ```text
-Phase 1 — Foundation (current)
+Phase 1 — Foundation (done)
   ├─ [x] .> syntax spec draft
   ├─ [x] Interactive demo (index.html)
   ├─ [x] CommonMark issue post
   ├─ [x] markdown-it plugin PRD
-  └─ [ ] markdown-it plugin implementation
+  └─ [x] markdown-it plugin implementation
 
-Phase 2 — Ecosystem
-  ├─ [ ] npm publish (markdown-it-dot-indent)
+Phase 2 — Ecosystem (current)
+  ├─ [x] npm publish (markdown-it-dot-indent)
   ├─ [ ] VSCode extension (wrapping markdown-it plugin)
   └─ [ ] Obsidian community plugin
 
@@ -99,3 +114,4 @@ Phase 3 — Advocacy
   ├─ [ ] Parser-specific issues (goldmark, comrak, marked)
   └─ [ ] Usage metrics & community feedback collection
 ```
+
